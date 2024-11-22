@@ -5,21 +5,22 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.zcy.fancydialog.askDialog
 import com.zcy.pudding.Pudding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.zcy.pudding.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        editText.addTextChangedListener(object : TextWatcher {
+        val binding = ActivityMainBinding.inflate(LayoutInflater.from(this), null, false)
+        setContentView(binding.root)
+        binding.editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 Pudding.create(this@MainActivity) {
                     setTitle("This is Title")
@@ -33,10 +34,14 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        binding.click1.setOnClickListener {
+            click1()
+        }
+
     }
 
     // 默认形式
-    fun click1(view: View) {
+    fun click1() {
         Pudding.create(this) {
             setTitle("This is Title")
             setText("this is text")

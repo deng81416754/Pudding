@@ -1,97 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/warn_root"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/body"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <FrameLayout
+            android:id="@+id/warn_root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:paddingStart="@dimen/pudding_padding_default"
-            android:paddingTop="@dimen/pudding_text_padding_top"
-            android:paddingEnd="@dimen/pudding_padding_default"
-            android:paddingBottom="@dimen/pudding_padding_default">
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/content"
-                app:srcCompat="@drawable/alerter_ic_notifications"/>
-
-        <Space
-                android:id="@+id/baseDot"
-                android:layout_width="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/default_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/content"
-                android:layout_height="wrap_content"
-        />
-        <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:visibility="invisible"
-                android:indeterminateTint="@android:color/white"
-                android:progressTint="@android:color/white"
-                app:layout_constraintTop_toTopOf="@+id/content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/content"/>
-
-        <LinearLayout
-                android:id="@+id/content"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/baseDot"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="@dimen/big_margin"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:layout_marginStart="@dimen/small_margin"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize"
-                    tools:text="Title"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:layout_marginStart="@dimen/small_margin"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/mini_margin"
-                    android:textSize="@dimen/subTextSize"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:text="123123123"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:id="@+id/buttonContainer"
-                app:layout_constraintTop_toBottomOf="@+id/content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="horizontal">
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/pudding_padding_default"
+                android:paddingTop="@dimen/pudding_text_padding_top"
+                android:paddingEnd="@dimen/pudding_padding_default"
+                android:paddingBottom="@dimen/pudding_padding_default">
 
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/content"
+                    app:srcCompat="@drawable/alerter_ic_notifications"/>
+
+            <Space
+                    android:id="@+id/baseDot"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/content"
+                    android:layout_height="wrap_content"
+                    />
+            <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:visibility="invisible"
+                    android:indeterminateTint="@android:color/white"
+                    android:progressTint="@android:color/white"
+                    app:layout_constraintTop_toTopOf="@+id/content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/content"/>
+
+            <LinearLayout
+                    android:id="@+id/content"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/baseDot"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/big_margin"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textSize"
+                        tools:text="Title"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/subText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginTop="@dimen/mini_margin"
+                        android:textSize="@dimen/subTextSize"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:text="123123123"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/buttonContainer"
+                    app:layout_constraintTop_toBottomOf="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</layout>

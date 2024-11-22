@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import kotlinx.android.synthetic.main.layout_choco.view.*
 import java.lang.ref.WeakReference
 
 /**
@@ -44,7 +43,7 @@ class Pudding : LifecycleObserver {
         }, Choco.DISPLAY_TIME)
 
         // click dismiss
-        choco.body.setOnClickListener {
+        choco.setBodyClick {
             choco.hide()
         }
 

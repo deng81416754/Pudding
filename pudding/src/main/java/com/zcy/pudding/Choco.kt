@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -21,7 +22,7 @@ import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.layout_choco.view.*
+import com.zcy.pudding.databinding.LayoutChocoBinding
 
 /**
  * @author:         https://github.com/o0o0oo00
@@ -29,7 +30,11 @@ import kotlinx.android.synthetic.main.layout_choco.view.*
  *
  * @date:           2019/3/15
  */
-class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class Choco @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
     FrameLayout(context, attrs, defStyleAttr) {
 
     private lateinit var animEnter: ObjectAnimator
@@ -45,10 +50,12 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
     private var onDismiss: (() -> Unit)? = null
 
     private var onlyOnce = true
-
+    lateinit var binding: LayoutChocoBinding
 
     init {
-        inflate(context, R.layout.layout_choco, this)
+//        inflate(context, R.layout.layout_choco, this)
+        binding = LayoutChocoBinding.inflate(LayoutInflater.from(context), this, true)
+
     }
 
     /**
@@ -57,19 +64,19 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
     private fun initConfiguration() {
 
         if (enableIconPulse) {
-            icon?.startAnimation(AnimationUtils.loadAnimation(context, R.anim.alerter_pulse))
+            binding.icon.startAnimation(AnimationUtils.loadAnimation(context, R.anim.alerter_pulse))
         }
 
         if (enableProgress) {
-            icon.visibility = View.GONE
-            progress.visibility = View.VISIBLE
+            binding.icon.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
         } else {
-            icon.visibility = View.VISIBLE
-            progress.visibility = View.GONE
+            binding.icon.visibility = View.VISIBLE
+            binding.progress.visibility = View.GONE
         }
 
         buttons.forEach {
-            buttonContainer.addView(it)
+            binding.buttonContainer.addView(it)
         }
 
         if (enabledVibration) {
@@ -95,7 +102,12 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
 
         if (onlyOnce) {
             onlyOnce = false
-            animEnter = ObjectAnimator.ofFloat(this@Choco, "translationY", -this@Choco.measuredHeight.toFloat(), -80F)
+            animEnter = ObjectAnimator.ofFloat(
+                this@Choco,
+                "translationY",
+                -this@Choco.measuredHeight.toFloat(),
+                -80F
+            )
             animEnter.interpolator = animEnterInterceptor
             animEnter.duration = ANIMATION_DURATION
             animEnter.start()
@@ -114,7 +126,8 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         if (!this@Choco.isAttachedToWindow) {
             return
         }
-        val windowManager = (this.context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager) ?: return
+        val windowManager =
+            (this.context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager) ?: return
         if (removeNow) {
             if (this@Choco.isAttachedToWindow) {
                 onDismiss?.invoke()
@@ -122,8 +135,13 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
             }
             return
         }
-        body.isClickable = false
-        val anim = ObjectAnimator.ofFloat(this@Choco, "translationY", -80F, -this@Choco.measuredHeight.toFloat())
+        binding.body.isClickable = false
+        val anim = ObjectAnimator.ofFloat(
+            this@Choco,
+            "translationY",
+            -80F,
+            -this@Choco.measuredHeight.toFloat()
+        )
         anim.interpolator = AnticipateOvershootInterpolator()
         anim.duration = ANIMATION_DURATION
         anim.start()
@@ -137,7 +155,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
 
 
     fun setChocoBackgroundColor(@ColorInt color: Int) {
-        body.setBackgroundColor(color)
+        binding.body.setBackgroundColor(color)
     }
 
     /**
@@ -146,7 +164,13 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param resource The qualified drawable integer
      */
     fun setChocoBackgroundResource(@DrawableRes resource: Int) {
-        body.setBackgroundResource(resource)
+        binding.body.setBackgroundResource(resource)
+    }
+
+    fun setBodyClick(block: () -> Unit ){
+        binding.body.setOnClickListener {
+            block.invoke()
+        }
     }
 
     /**
@@ -156,9 +180,9 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      */
     fun setChocoBackgroundDrawable(drawable: Drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            body.background = drawable
+            binding. body.background = drawable
         } else {
-            body.setBackgroundDrawable(drawable)
+            binding.body.setBackgroundDrawable(drawable)
         }
     }
 
@@ -178,8 +202,8 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      */
     fun setTitle(title: String) {
         if (!TextUtils.isEmpty(title)) {
-            text.visibility = View.VISIBLE
-            text.text = title
+            binding.text.visibility = View.VISIBLE
+            binding.text.text = title
         }
     }
 
@@ -190,9 +214,9 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      */
     fun setTitleAppearance(@StyleRes textAppearance: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            text.setTextAppearance(textAppearance)
+            binding.text.setTextAppearance(textAppearance)
         } else {
-            text.setTextAppearance(text.context, textAppearance)
+            binding.text.setTextAppearance(binding.text.context, textAppearance)
         }
     }
 
@@ -202,7 +226,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param typeface The typeface to use
      */
     fun setTitleTypeface(typeface: Typeface) {
-        text.typeface = typeface
+        binding.text.typeface = typeface
     }
 
     /**
@@ -220,7 +244,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param typeface The typeface to use
      */
     fun setTextTypeface(typeface: Typeface) {
-        subText.typeface = typeface
+        binding.subText.typeface = typeface
     }
 
     /**
@@ -230,8 +254,8 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      */
     fun setText(text: String) {
         if (!TextUtils.isEmpty(text)) {
-            this.subText.visibility = View.VISIBLE
-            this.subText.text = text
+            binding.subText.visibility = View.VISIBLE
+            binding.subText.text = text
         }
     }
 
@@ -242,9 +266,9 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      */
     fun setTextAppearance(@StyleRes textAppearance: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            subText.setTextAppearance(textAppearance)
+            binding.subText.setTextAppearance(textAppearance)
         } else {
-            subText.setTextAppearance(subText.context, textAppearance)
+            binding.subText.setTextAppearance(binding.subText.context, textAppearance)
         }
     }
 
@@ -254,7 +278,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param iconId Drawable resource id of the icon to use in the Choco
      */
     fun setIcon(@DrawableRes iconId: Int) {
-        icon.setImageDrawable(AppCompatResources.getDrawable(context, iconId))
+        binding.icon.setImageDrawable(AppCompatResources.getDrawable(context, iconId))
     }
 
     /**
@@ -263,7 +287,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param color Color int
      */
     fun setIconColorFilter(@ColorInt color: Int) {
-        icon.setColorFilter(color)
+        binding.icon.setColorFilter(color)
     }
 
     /**
@@ -272,7 +296,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param colorFilter ColorFilter
      */
     fun setIconColorFilter(colorFilter: ColorFilter) {
-        icon.colorFilter = colorFilter
+        binding.icon.colorFilter = colorFilter
     }
 
     /**
@@ -282,7 +306,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param mode  PorterDuff.Mode
      */
     fun setIconColorFilter(@ColorInt color: Int, mode: PorterDuff.Mode) {
-        icon.setColorFilter(color, mode)
+        binding.icon.setColorFilter(color, mode)
     }
 
     /**
@@ -291,7 +315,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param bitmap Bitmap image of the icon to use in the Choco.
      */
     fun setIcon(bitmap: Bitmap) {
-        icon.setImageBitmap(bitmap)
+        binding.icon.setImageBitmap(bitmap)
     }
 
     /**
@@ -300,7 +324,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param drawable Drawable image of the icon to use in the Choco.
      */
     fun setIcon(drawable: Drawable) {
-        icon.setImageDrawable(drawable)
+        binding.icon.setImageDrawable(drawable)
     }
 
     /**
@@ -309,7 +333,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param showIcon True to show the icon, false otherwise
      */
     fun showIcon(showIcon: Boolean) {
-        icon.visibility = if (showIcon) View.VISIBLE else View.GONE
+        binding.icon.visibility = if (showIcon) View.VISIBLE else View.GONE
     }
 
     /**
@@ -336,7 +360,8 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param color The color resource
      */
     fun setProgressColorRes(@ColorRes color: Int) {
-        progress?.progressDrawable?.colorFilter = LightingColorFilter(MUL, ContextCompat.getColor(context, color))
+        binding.progress?.progressDrawable?.colorFilter =
+            LightingColorFilter(MUL, ContextCompat.getColor(context, color))
     }
 
     /**
@@ -345,7 +370,7 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * @param color The color resource
      */
     fun setProgressColorInt(@ColorInt color: Int) {
-        progress?.progressDrawable?.colorFilter = LightingColorFilter(MUL, color)
+        binding.progress?.progressDrawable?.colorFilter = LightingColorFilter(MUL, color)
     }
 
     /**
@@ -381,19 +406,23 @@ class Choco @JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
      * Set whether to enable swipe to dismiss or not
      */
     fun enableSwipeToDismiss() {
-        body.setOnTouchListener(SwipeDismissTouchListener(body, object : SwipeDismissTouchListener.DismissCallbacks {
-            override fun canDismiss(): Boolean {
-                return true
-            }
+        binding.body.setOnTouchListener(
+            SwipeDismissTouchListener(
+                binding.body,
+                object : SwipeDismissTouchListener.DismissCallbacks {
+                    override fun canDismiss(): Boolean {
+                        return true
+                    }
 
-            override fun onDismiss(view: View) {
-                hide(true)
-            }
+                    override fun onDismiss(view: View) {
+                        hide(true)
+                    }
 
-            override fun onTouch(view: View, touch: Boolean) {
-                // Ignore
-            }
-        }))
+                    override fun onTouch(view: View, touch: Boolean) {
+                        // Ignore
+                    }
+                })
+        )
     }
 
     companion object {
